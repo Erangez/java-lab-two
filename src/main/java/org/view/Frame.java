@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Frame extends JFrame implements ActionListener {
+    // Константы
     final int FRAME_WIDTH = 600, FRAME_HEIGHT = 600;
     static final Color BACKGROUND_COLOR = new Color(28,27,33);
     static Color PANEL_COLOR = new Color(48,46,56);
@@ -18,6 +19,7 @@ public class Frame extends JFrame implements ActionListener {
 
     final Border transparentBorder = BorderFactory.createLineBorder(TRANSPARENT_COLOR, 1);
 
+    // Поля
     JButton confirmButton;
     JTextField textField, textField1;
     JLabel bmiLabel;
@@ -25,19 +27,22 @@ public class Frame extends JFrame implements ActionListener {
     Frame(){
 
         // Базовое окно
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
-        this.setTitle("Расчёт ИМТ");
-        this.setResizable(false);
-        this.setLayout(new BorderLayout());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        setTitle("Расчёт ИМТ");
+        setResizable(false);
+        setLayout(new BorderLayout());
 
         // UI
+
+        // Основная панель
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(7, 4));
         mainPanel.setBackground(BACKGROUND_COLOR);
         Border border = BorderFactory.createLineBorder(BACKGROUND_COLOR, 10);
         mainPanel.setBorder(border);
 
+        // Заголовок с названием
         JLabel headerLabel = new JLabel();
         headerLabel.setFont(BASE_FONT_20pt);
         headerLabel.setText("Программа для расчёта ИМТ");
@@ -47,6 +52,7 @@ public class Frame extends JFrame implements ActionListener {
         headerLabel.setOpaque(true);
         headerLabel.setBackground(PANEL_COLOR);
 
+        // Поле с формулой
         JLabel functionLabel = new JLabel();
         functionLabel.setFont(BASE_FONT_16pt);
         functionLabel.setText("<html>Расчётная формула:<br>" +
@@ -54,10 +60,12 @@ public class Frame extends JFrame implements ActionListener {
         functionLabel.setForeground(Color.WHITE);
         functionLabel.setHorizontalAlignment(JLabel.CENTER);
 
+        // Панель для кнопки с всплывающей подсказкой
         JPanel topPanel = new JPanel();
         topPanel.setOpaque(false);
         topPanel.setLayout(new BorderLayout());
 
+        // Панели с полями для ввода текста
         JPanel textFieldPanel = new JPanel();
         textFieldPanel.setOpaque(false);
         textFieldPanel.setLayout(new GridLayout(3,2));
@@ -101,12 +109,13 @@ public class Frame extends JFrame implements ActionListener {
         textField1.setBorder(transparentBorder);
         textField1.setHorizontalAlignment(JTextField.CENTER);
 
+        // Пустые панели
         JPanel emptyPanel = new JPanel();
         emptyPanel.setOpaque(false);
         JPanel emptyPanel1 = new JPanel();
         emptyPanel1.setOpaque(false);
 
-
+        // Кнопка подтверждения
         UIManager.put("Button.select", Color.GRAY);
         confirmButton = new JButton("Рассчитать");
         confirmButton.addActionListener(this);
@@ -117,6 +126,7 @@ public class Frame extends JFrame implements ActionListener {
         confirmButton.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 20));
         confirmButton.setPreferredSize(new Dimension(FRAME_WIDTH, 50));
 
+        // Поле с выводом информации об ИМТ
         bmiLabel = new JLabel();
         bmiLabel.setBackground(PANEL_COLOR);
         bmiLabel.setFont(BASE_FONT_16pt);
@@ -132,6 +142,7 @@ public class Frame extends JFrame implements ActionListener {
         bmiLabel.setHorizontalAlignment(JLabel.CENTER);
         bmiLabel.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 10));
 
+        // Кнопка с информацией в виде высплывающей подсказки
         JButton buttonInfo = new JButton("Об ИМТ") {
             @Override
             public JToolTip createToolTip(){
@@ -149,8 +160,8 @@ public class Frame extends JFrame implements ActionListener {
                 "выявляя возможный недостаток или избыток веса");
         buttonInfo.setBounds(100,0,100,0);
 
-        // Добавление
-        this.add(mainPanel);
+        // Добавление элементов
+        add(mainPanel);
         mainPanel.add(topPanel);
         topPanel.add(buttonInfo, BorderLayout.EAST);
         mainPanel.add(headerLabel);
@@ -168,6 +179,7 @@ public class Frame extends JFrame implements ActionListener {
         mainPanel.add(bmiLabel);
 
     }
+    // Функционал
     public void actionPerformed(ActionEvent event){
         if(event.getSource() == confirmButton){
             String weightText = textField.getText();
@@ -175,9 +187,8 @@ public class Frame extends JFrame implements ActionListener {
             if (isDouble.checkStringToDouble(weightText) && isDouble.checkStringToDouble(heightText)) {
                 double weight = Double.parseDouble(weightText);
                 double height = Double.parseDouble(heightText);
-                double bmi;
                 if (weight > 0 && height > 0 && height < 3) {
-                    bmi = Processing.calculateBMI(height, weight);
+                    double bmi = Processing.calculateBMI(height, weight);
                     bmiLabel.setText(String.format("ИМТ = %.1f", bmi));
                     if (bmi < 18.5){
                         new AdvicePage(AdviceTexts.BMI_1.getAdviceText()).setVisible(true);

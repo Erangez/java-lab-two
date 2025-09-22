@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CustomToolTip extends JToolTip {
-    public CustomToolTip(Color bgColor, Color fgColor, Font font) {
+    CustomToolTip(Color bgColor, Color fgColor, Font font) {
         super();
         setBackground(bgColor);
         setForeground(fgColor);

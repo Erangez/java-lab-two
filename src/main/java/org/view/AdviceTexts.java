@@ -8,7 +8,7 @@ public enum AdviceTexts {
 
     private final String string;
 
-    private AdviceTexts(String string){
+    AdviceTexts(String string){
         this.string = string;
     }
 
